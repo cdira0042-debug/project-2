@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fana Coffee</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --magenta: #7c0b6c;
+  --cyan: #85e5e8;
+  --bg: #f4edf5;
+  --white: #fffdf9;
+  --ink: #292520;
+  --muted: #817970;
+  --line: #e7dce8;
+  --peach: #ffe0c2;
+  --mint: #e4f8f4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(133,229,232,.24), transparent 24rem),
+    radial-gradient(circle at 92% 35%, rgba(124,11,108,.08), transparent 28rem),
+    var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+}
+
+button, select { font: inherit; }
+button { cursor: pointer; }
+
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  padding: 17px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Polkadot header */
+.topbar::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  opacity: .8;
+  background-image: radial-gradient(var(--cyan) 2px, transparent 2.5px);
+  background-size: 17px 17px;
+  pointer-events: none;
+}
+
+.brand {
+  position: relative;
+  z-index: 1;
+  font: 400 27px 'Pacifico', cursive;
+  color: var(--magenta);
+}
+
+.brand small {
+  display: block;
+  font: 600 9px 'DM Sans', sans-serif;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.stats {
+  display: flex;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.stats span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.stats b { font-size: 13px; }
+
+main {
+  max-width: 1120px;
+  margin: auto;
+  padding: 27px 18px 40px;
+}
+
+.page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  font: 700 clamp(28px, 4vw, 38px) 'Playfair Display', serif;
+}
+
+.page-heading p {
+  margin: 7px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.open-tag {
+  background: linear-gradient(110deg, var(--cyan), #baf4dc);
+  color: #17494b;
+  padding: 8px 12px;
+  border: 1px solid rgba(124,11,108,.12);
+  border-radius: 30px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 5px 14px rgba(133,229,232,.28);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.panel {
+  background: linear-gradient(145deg, rgba(255,253,249,.98), rgba(255,250,255,.95));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 17px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(73,35,69,.06);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, var(--magenta), var(--cyan), var(--peach));
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+
+.panel-head h2 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.panel-head small {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.customer {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  background: linear-gradient(110deg, #f5e8f3, #e7f9f7);
+  padding: 15px;
+  border: 1px solid rgba(124,11,108,.08);
+  border-radius: 10px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--magenta);
+  color: white;
+  font: 700 20px 'Playfair Display', serif;
+  border: 4px dotted var(--cyan);
+}
+
+.customer strong { font-size: 13px; }
+
+.customer p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 5px 0 0;
+  line-height: 1.6;
+}
+
+.ticket {
+  border: 1px dashed #cfc1b4;
+  border-radius: 10px;
+  margin-top: 13px;
+  padding: 16px;
+  background:
+    radial-gradient(circle at 100% 0%, var(--cyan) 0 3px, transparent 4px) top right / 16px 16px no-repeat,
+    var(--white);
+}
+
+.ticket-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+
+.order-name {
+  font: 700 25px 'Playfair Display', serif;
+  margin: 7px 0;
+  color: var(--magenta);
+}
+
+.order-details {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.order-price {
+  margin-top: 12px;
+  font-size: 11px;
+}
+
+.order-price b {
+  display: block;
+  font-size: 19px;
+  color: var(--ink);
+  margin-top: 3px;
+}
+
+.menu-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.menu-item {
+  text-align: left;
+  background-color: white;
+  background-image: radial-gradient(var(--cyan) 1.5px, transparent 2px);
+  background-size: 13px 13px;
+  background-position: right 5px top 5px;
+  background-repeat: no-repeat;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+  transition: .15s;
+  color: var(--ink);
+}
+
+.menu-item:hover {
+  border-color: var(--magenta);
+  transform: translateY(-2px);
+}
+
+.menu-item.active {
+  border: 1.5px solid var(--magenta);
+  background-color: #fbf0f9;
+  box-shadow: 0 5px 14px rgba(124,11,108,.12);
+}
+
+.menu-item:focus-visible, .choice:focus-visible, button:focus-visible, select:focus-visible {
+  outline: 3px solid rgba(133,229,232,.8);
+  outline-offset: 2px;
+}
+
+.drink-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--magenta);
+  color: var(--cyan);
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.menu-item strong {
+  display: block;
+  font-size: 12px;
+  padding-right: 4px;
+}
+
+.menu-item small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.menu-note {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 13px;
+}
+
+.field { margin: 16px 0; }
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.choice {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 7px;
+  padding: 9px 11px;
+  font-size: 11px;
+  color: var(--ink);
+}
+
+.choice.active {
+  background: linear-gradient(120deg, var(--magenta), #a62a91);
+  border-color: var(--magenta);
+  color: white;
+  box-shadow: 0 3px 10px rgba(124,11,108,.18);
+}
+
+select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.station {
+  border-radius: 12px;
+  padding: 16px;
+  color: white;
+  background-color: var(--magenta);
+  background-image: radial-gradient(var(--cyan) 1.5px, transparent 2px);
+  background-size: 17px 17px;
+  background-position: right 5px top 5px;
+  background-repeat: repeat-y;
+}
+
+.station-inner {
+  background: var(--magenta);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 9px;
+  padding: 12px;
+}
+
+.station-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.station-title span {
+  color: var(--cyan);
+  font-size: 9px;
+}
+
+.cup-area {
+  height: 128px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.cup {
+  width: 80px;
+  height: 104px;
+  position: relative;
+  transition: .2s;
+  filter: drop-shadow(0 5px 7px rgba(0,0,0,.2));
+}
+
+.cup-body {
+  position: absolute;
+  top: 12px;
+  left: 7px;
+  right: 7px;
+  bottom: 0;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 87% 100%, 13% 100%);
+  border: 2px solid rgba(255,255,255,.9);
+  background: linear-gradient(105deg, rgba(255,255,255,.48), rgba(255,255,255,.08) 45%, rgba(255,255,255,.3));
+  box-shadow: inset 4px 0 7px rgba(255,255,255,.35);
+}
+
+.cup-body::after {
+  content: "";
+  position: absolute;
+  inset: 5px 5px 4px;
+  background-image: radial-gradient(var(--cyan) 1.5px, transparent 2px);
+  background-size: 12px 12px;
+  opacity: .95;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cup-lid {
+  position: absolute;
+  z-index: 4;
+  top: 8px;
+  left: 3px;
+  width: 74px;
+  height: 12px;
+  border: 2px solid rgba(255,255,255,.95);
+  border-radius: 5px 5px 4px 4px;
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(210,248,248,.55));
+  box-shadow: 0 2px 3px rgba(0,0,0,.16);
+}
+
+.cup-straw {
+  position: absolute;
+  z-index: 5;
+  top: -10px;
+  left: 37px;
+  width: 6px;
+  height: 29px;
+  border: 1px solid rgba(255,255,255,.95);
+  border-radius: 4px 4px 1px 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,.9), rgba(133,229,232,.65));
+}
+
+.cup-contents {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+}
+
+.ingredient-layer {
+  flex: 0 0 var(--layer-height, 25%);
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  border-top: 1px solid rgba(255,255,255,.45);
+  color: rgba(255,255,255,.92);
+  font-size: 7px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,.45);
+  animation: pour-in .25s ease-out;
+}
+
+.ingredient-ice {
+  background-color: rgba(133,229,232,.42);
+  background-image: linear-gradient(45deg, transparent 38%, rgba(255,255,255,.9) 39% 48%, transparent 49%),
+    linear-gradient(-45deg, transparent 38%, rgba(255,255,255,.65) 39% 48%, transparent 49%);
+  background-size: 15px 15px;
+  color: #17494b;
+  text-shadow: none;
+}
+
+.ingredient-liquid {
+  border-radius: 0 0 18px 18px;
+  transition: flex-basis .35s, background-color .35s;
+  box-shadow: inset 0 5px 9px rgba(255,255,255,.16);
+}
+
+@keyframes pour-in {
+  from { transform: translateY(-8px); opacity: .4; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.cup-label {
+  position: absolute;
+  bottom: 10px;
+  left: 4px;
+  right: 4px;
+  color: var(--magenta);
+  text-align: center;
+  font-size: 7px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(255,255,255,.95);
+  z-index: 3;
+}
+
+.cup-label span {
+  display: block;
+  font-size: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cup-name-options {
+  display: grid;
+  gap: 8px;
+}
+
+.cup-name-toggle {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+.cup-name-toggle input { accent-color: var(--magenta); }
+
+.cup-name-options input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12px;
+}
+
+.cup-name-options input[type="text"]:disabled { background: #f2eef2; }
+
+.station-status {
+  color: #f0d8ed;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.6;
+  min-height: 16px;
+  margin-bottom: 11px;
+}
+
+.primary, .secondary {
+  border: 0;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.primary {
+  width: 100%;
+  background: linear-gradient(110deg, var(--cyan), #baf4dc);
+  color: #173e40;
+  box-shadow: 0 4px 12px rgba(133,229,232,.25);
+  transition: transform .15s, filter .15s, box-shadow .15s;
+}
+
+.primary:hover {
+  filter: brightness(.97);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(133,229,232,.35);
+}
+
+.secondary {
+  background: #eee7df;
+  color: var(--ink);
+}
+
+.message {
+  display: none;
+  margin-top: 13px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.message.show { display: block; }
+.message.good { background: #e4f5ef; color: #205b43; }
+.message.bad { background: #f8e7e4; color: #963e36; }
+
+.progress-track {
+  height: 7px;
+  background: #eee7df;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--magenta), #c13aa1, var(--cyan));
+  transition: .25s;
+}
+
+.goal-text {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 10px;
+  padding: 12px;
+}
+
+@media(max-width:720px) {
+  .layout { grid-template-columns: 1fr; }
+  .topbar { padding: 14px 18px; }
+  .stats { gap: 11px; }
+  .stats span { font-size: 10px; }
+  .stats b { font-size: 11px; }
+  .brand { font-size: 22px; }
+  .topbar::after { width: 85px; opacity: .45; }
+  .page-heading { align-items: flex-start; }
+  .open-tag { font-size: 9px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    Fana Coffee
+    <small>COFFEE · DAILY</small>
+  </div>
+
+  <div class="stats">
+    <div><span>Balance</span><br><b id="money">Rp 50.000</b></div>
+    <div><span>Served</span><br><b id="served">0 cups</b></div>
+    <div><span>Rating</span><br><b id="rating">—</b></div>
+  </div>
+</header>
+
+<main>
+  <div class="page-heading">
+    <div>
+      <h1>Barista Station</h1>
+      <p>Take orders. Make coffee. Serve.</p>
+    </div>
+    <div class="open-tag">● OPEN</div>
+  </div>
+
+  <div class="layout">
+    <section>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Customer order</h2>
+          <small id="customerNo">ORDER #01</small>
+        </div>
+
+        <div class="customer">
+          <div class="avatar" id="avatar">A</div>
+          <div>
+            <strong id="customerName">Avery</strong>
+            <p id="customerLine">One coffee, please.</p>
+          </div>
+        </div>
+
+        <div class="ticket">
+          <div class="ticket-label">ORDER TICKET</div>
+          <div class="order-name" id="orderName">Iced Latte</div>
+          <div class="order-details" id="orderDetails"></div>
+          <div class="order-price">
+            Order total
+            <b id="orderPrice">Rp 25.000</b>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Menu</h2>
+          <small>COFFEE & MILK</small>
+        </div>
+        <div class="menu-list" id="menuList"></div>
+        <div class="menu-note">Harga menu ukuran medium. Harga dapat berubah sesuai ukuran.</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Prepare order</h2>
+          <small>BARISTA COUNTER</small>
+        </div>
+
+        <div class="field">
+          <label>1. Coffee</label>
+          <div class="choices" id="drinkChoices"></div>
+        </div>
+
+        <div class="field">
+          <label>2. Size</label>
+          <div class="choices" id="sizeChoices"></div>
+        </div>
+
+        <div class="field">
+          <label>3. Temperature</label>
+          <div class="choices" id="temperatureChoices"></div>
+        </div>
+
+        <div class="field">
+          <label>4. Extra ice</label>
+          <div class="choices" id="iceChoices"></div>
+        </div>
+
+        <div class="field">
+          <label>5. Espresso shots</label>
+          <div class="choices" id="shotChoices"></div>
+        </div>
+
+        <div class="field">
+          <label>6. Milk</label>
+          <select id="milk">
+            <option>Regular milk</option>
+            <option>Oat milk</option>
+            <option>Almond milk</option>
+            <option>No milk</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>7. Syrup</label>
+          <select id="syrup">
+            <option>No syrup</option>
+            <option>Vanilla syrup</option>
+            <option>Caramel syrup</option>
+            <option>Hazelnut syrup</option>
+            <option>Butterscotch syrup</option>
+            <option>Chocolate syrup</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="cupNameToggle">8. Nama pada cup</label>
+          <div class="cup-name-options">
+            <label class="cup-name-toggle">
+              <input id="cupNameToggle" type="checkbox" checked>
+              Tambahkan nama customer
+            </label>
+            <input id="cupNameInput" type="text" maxlength="18" placeholder="Nama customer">
+          </div>
+        </div>
+
+        <div class="station">
+          <div class="station-inner">
+            <div class="station-title">
+              <b>Preparation counter</b>
+              <span id="cupSize">MEDIUM</span>
+            </div>
+
+            <div class="cup-area">
+              <div class="cup" id="cup">
+                <div class="cup-straw"></div>
+                <div class="cup-lid"></div>
+                <div class="cup-body">
+                  <div class="cup-contents" id="cupContents"></div>
+                  <div class="cup-label">
+                    <span id="cupCustomerName"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="station-status" id="stationStatus">
+              Follow the order ticket.
+            </div>
+
+            <button class="primary" id="makeBtn" onclick="makeDrink()">
+              Tambahkan bahan pertama
+            </button>
+            <button class="primary" id="serveBtn" onclick="serveDrink()"
+              style="display:none;margin-top:8px">
+              Serve order
+            </button>
+          </div>
+        </div>
+
+        <div class="message" id="message"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Daily target</h2>
+          <small>5 ORDERS</small>
+        </div>
+        <div style="font-size:12px">Customers served</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress"></div>
+        </div>
+        <div class="goal-text" id="goalText">0 / 5 orders completed</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">FANA COFFEE · DAILY SERVICE</div>
+</main>
+
+<script>
+const drinks={Espresso:{price:18000,shots:1,milk:"No milk",syrup:"No syrup",color:"#68432f"},Americano:{price:20000,shots:2,milk:"No milk",syrup:"No syrup",color:"#825b40"},"Long Black":{price:22000,shots:2,milk:"No milk",syrup:"No syrup",color:"#573722"},Latte:{price:25000,shots:1,milk:"Regular milk",syrup:"No syrup",color:"#b58a66"},Cappuccino:{price:25000,shots:2,milk:"Regular milk",syrup:"No syrup",color:"#9a704e"},Mocha:{price:28000,shots:2,milk:"Regular milk",syrup:"Chocolate syrup",color:"#70432e"},"Butterscotch Latte":{price:30000,shots:2,milk:"Regular milk",syrup:"Butterscotch syrup",color:"#c18b4d"}};
+const customers=[{name:"Avery",line:"One coffee, please.",avatar:"A"},{name:"Jamie",line:"Can I get my usual?",avatar:"J"},{name:"Morgan",line:"Something with milk, please.",avatar:"M"},{name:"Riley",line:"A coffee to go, please.",avatar:"R"},{name:"Taylor",line:"Not too sweet, please.",avatar:"T"},{name:"Casey",line:"Surprise me with my order.",avatar:"C"},{name:"Jordan",line:"Just a classic black coffee.",avatar:"J"}];
+const sizes=["Small","Medium","Large"],shotOptions=[1,2,3];
+let money=50000,served=0,totalRating=0,order=null,customerIndex=0,selected={},prepared=false,mixing=false,lastResult=null,ingredientSteps=[],ingredientIndex=0,liquidColors=[];
+const $=id=>document.getElementById(id), randomItem=arr=>arr[Math.floor(Math.random()*arr.length)], formatMoney=n=>"Rp "+Math.round(n).toLocaleString("id-ID");
+function ingredientColor(kind){if(kind==="coffee")return drinks[selected.drink].color;if(kind==="milk")return "#fff4dc";return ({"Vanilla syrup":"#d9ae63","Caramel syrup":"#a85b32","Hazelnut syrup":"#795139","Butterscotch syrup":"#c18b4d","Chocolate syrup":"#573722"})[selected.syrup]||"#a34d3b"}
+function blendColors(colors){const channels=[0,0,0];colors.forEach(color=>{const hex=color.slice(1);for(let i=0;i<3;i++)channels[i]+=parseInt(hex.slice(i*2,i*2+2),16)});return `rgb(${channels.map(v=>Math.round(v/colors.length)).join(",")})`}
+function syncMenuSelection(){document.querySelectorAll(".menu-item").forEach(item=>item.classList.toggle("active",item.dataset.drink===selected.drink))}
+function makeChoices(id,options,current,setter){const box=$(id);box.innerHTML="";options.forEach(opt=>{const btn=document.createElement("button");btn.className="choice"+(opt===current?" active":"");btn.textContent=opt;btn.onclick=()=>{if(prepared||mixing)return;setter(opt);makeChoices(id,options,opt,setter);updateCup();syncMenuSelection()};box.appendChild(btn)})}
+function renderMenu(){const list=$("menuList"),symbols=["E","A","L","L","C","M","B"];list.innerHTML="";Object.entries(drinks).forEach(([name,d],i)=>{const el=document.createElement("button");el.className="menu-item";el.dataset.drink=name;el.innerHTML=`<div class="drink-icon">${symbols[i]}</div><strong>${name}</strong><small>${formatMoney(d.price)}</small>`;el.onclick=()=>{if(prepared||mixing)return;selected.drink=name;makeChoices("drinkChoices",Object.keys(drinks),name,v=>selected.drink=v);updateCup();syncMenuSelection()};list.appendChild(el)});syncMenuSelection()}
+function setupControls(){makeChoices("drinkChoices",Object.keys(drinks),selected.drink,v=>selected.drink=v);makeChoices("sizeChoices",sizes,selected.size,v=>selected.size=v);makeChoices("temperatureChoices",["Hot","Cold"],selected.temperature,v=>{selected.temperature=v;if(v==="Hot")selected.extraIce=false;makeIceChoices()});makeIceChoices();const shots=shotOptions.map(n=>n+(n===1?" shot":" shots")),current=selected.shots+(selected.shots===1?" shot":" shots");makeChoices("shotChoices",shots,current,v=>selected.shots=parseInt(v));$("milk").value=selected.milk;$("syrup").value=selected.syrup;$("milk").disabled=$("syrup").disabled=false;syncMenuSelection()}
+function makeIceChoices(){const opts=selected.temperature==="Cold"?["No extra ice","Extra ice"]:["No extra ice"];makeChoices("iceChoices",opts,selected.extraIce?"Extra ice":"No extra ice",v=>selected.extraIce=v==="Extra ice")}
+function updateCup(){$("cupSize").textContent=selected.size.toUpperCase();$("cup").style.transform=selected.size==="Large"?"scale(1.12)":selected.size==="Small"?"scale(.86)":"scale(1)";$("cupCustomerName").textContent=$("cupNameToggle").checked?$("cupNameInput").value.trim():""}
+function calculatePrice(drink,size){return drinks[drink].price+(size==="Large"?5000:size==="Small"?-3000:0)}
+function makeOrder(){const name=randomItem(Object.keys(drinks)),d=drinks[name],size=randomItem(sizes),temperature=randomItem(["Hot","Cold"]);order={drink:name,size,temperature,extraIce:temperature==="Cold"&&Math.random()<.5,shots:d.shots,milk:d.milk,syrup:d.syrup,price:calculatePrice(name,size)};selected={drink:"Espresso",size:"Medium",temperature:"Hot",extraIce:false,shots:1,milk:"No milk",syrup:"No syrup"};prepared=mixing=false;lastResult=null;ingredientSteps=[];ingredientIndex=0;liquidColors=[];$("cupContents").innerHTML="";setupControls();const c=customers[customerIndex%customers.length];$("cupNameToggle").checked=true;$("cupNameToggle").disabled=false;$("cupNameInput").value=c.name;$("cupNameInput").disabled=false;updateCup();$("customerName").textContent=c.name;$("customerLine").textContent='"'+c.line+'"';$("avatar").textContent=c.avatar;$("customerNo").textContent="ORDER #"+String(served+1).padStart(2,"0");$("orderName").textContent=size+" "+name;$("orderDetails").innerHTML=`${order.temperature} · ${order.extraIce?"Extra ice":"No extra ice"}<br>${order.shots} espresso shot${order.shots>1?"s":""}<br>${order.milk}<br>${order.syrup}`;$("orderPrice").textContent=formatMoney(order.price);$("makeBtn").style.display="block";$("makeBtn").textContent="Tambahkan bahan pertama";$("makeBtn").onclick=makeDrink;$("makeBtn").disabled=false;$("serveBtn").style.display="none";$("stationStatus").textContent="Follow the order ticket.";hideMessage()}
+function makeDrink(){if(prepared)return;if(!mixing){selected.milk=$("milk").value;selected.syrup=$("syrup").value;ingredientSteps=[];if(selected.temperature==="Cold")ingredientSteps.push({kind:"ice",label:selected.extraIce?"Extra ice":"Ice"});ingredientSteps.push({kind:"coffee",label:selected.drink+" · "+selected.shots+(selected.shots===1?" shot":" shots")});if(selected.milk!=="No milk")ingredientSteps.push({kind:"milk",label:selected.milk});if(selected.syrup!=="No syrup")ingredientSteps.push({kind:"syrup",label:selected.syrup});mixing=true;["milk","syrup","cupNameToggle","cupNameInput"].forEach(id=>$(id).disabled=true);document.querySelectorAll(".choice,.menu-item").forEach(b=>b.disabled=true)}const step=ingredientSteps[ingredientIndex],contents=$("cupContents");if(step.kind==="ice"){const ice=document.createElement("div");ice.className="ingredient-layer ingredient-ice";ice.style.setProperty("--layer-height",100/ingredientSteps.length+"%");ice.textContent=step.label;contents.appendChild(ice)}else{liquidColors.push(ingredientColor(step.kind));let liquid=contents.querySelector(".ingredient-liquid");if(!liquid){liquid=document.createElement("div");liquid.className="ingredient-layer ingredient-liquid";contents.appendChild(liquid)}liquid.style.setProperty("--layer-height",liquidColors.length*100/ingredientSteps.length+"%");liquid.style.backgroundColor=blendColors(liquidColors);liquid.textContent=liquidColors.length>1?"Mixed":step.label}ingredientIndex++;updateCup();if(ingredientIndex<ingredientSteps.length){$("makeBtn").textContent="Tambahkan "+ingredientSteps[ingredientIndex].label;$("stationStatus").textContent=`Bahan ${ingredientIndex} dari ${ingredientSteps.length} sudah masuk cup.`;return}lastResult={drink:selected.drink===order.drink,size:selected.size===order.size,temperature:selected.temperature===order.temperature,extraIce:selected.extraIce===order.extraIce,shots:selected.shots===order.shots,milk:selected.milk===order.milk,syrup:selected.syrup===order.syrup};prepared=true;const correct=Object.values(lastResult).filter(Boolean).length;$("stationStatus").textContent="Minuman selesai diracik. Siap disajikan!";$("makeBtn").style.display="none";$("serveBtn").style.display="block";showMessage(correct===7?"Resep cocok dengan pesanan.":correct+" dari 7 detail resep cocok dengan pesanan.",correct===7?"good":"bad")}
+function serveDrink(){if(!prepared)return;const correct=Object.values(lastResult).filter(Boolean).length;let earned,rating,feedback;if(correct===7){earned=order.price+5000;rating=5;feedback="Perfect order. Tip +Rp 5.000."}else if(correct>=4){earned=Math.round(order.price*correct/7);rating=3;feedback="Order partially correct. Earned "+formatMoney(earned)+"."}else{earned=Math.round(order.price*.25);rating=1;feedback="Order incorrect. Earned "+formatMoney(earned)+"."}money+=earned;served++;customerIndex++;totalRating+=rating;$("money").textContent=formatMoney(money);$("served").textContent=served+" cups";$("rating").textContent=(totalRating/served).toFixed(1)+"/5";$("progress").style.width=Math.min(served/5*100,100)+"%";$("goalText").textContent=served>=5?"Daily target completed.":served+" / 5 orders completed";$("serveBtn").style.display="none";$("makeBtn").style.display="block";$("stationStatus").textContent="Order completed.";showMessage(feedback,rating>=3?"good":"bad");$("makeBtn").textContent=served>=5?"Start new shift":"Next customer";$("makeBtn").onclick=served>=5?newShift:makeOrder}
+function newShift(){served=totalRating=customerIndex=0;money=50000;$("money").textContent=formatMoney(money);$("served").textContent="0 cups";$("rating").textContent="—";$("progress").style.width="0%";$("goalText").textContent="0 / 5 orders completed";makeOrder()}
+function showMessage(text,type){$("message").textContent=text;$("message").className="message show "+type}
+function hideMessage(){$("message").textContent="";$("message").className="message"}
+$("milk").addEventListener("change",e=>{if(!prepared&&!mixing)selected.milk=e.target.value});$("syrup").addEventListener("change",e=>{if(!prepared&&!mixing)selected.syrup=e.target.value});$("cupNameToggle").addEventListener("change",updateCup);$("cupNameInput").addEventListener("input",updateCup);
+renderMenu();makeOrder();
+</script>
+
+</body>
+</html>
